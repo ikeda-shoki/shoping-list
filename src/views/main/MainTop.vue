@@ -4,12 +4,8 @@ import { MqResponsive } from "vue3-mq";
 
 <template>
   <div>
-    <MqResponsive target="sp+">
-      
-    </MqResponsive>
+    <MqResponsive target="sp+"></MqResponsive>
   </div>
 </template>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
