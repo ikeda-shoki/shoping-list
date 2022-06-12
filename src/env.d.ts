@@ -6,3 +6,6 @@ declare module "*.vue" {
   const component: DefineComponent<{}, {}, any>;
   export default component;
 }
+
+// モジュール型定義
+declare module "vue3-mq";
