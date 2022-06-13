@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { MqResponsive } from "vue3-mq";
-import Button from "../../components/parts/BasicButton.vue"
+import Button from "../../components/parts/BasicButton.vue";
 </script>
 
 <template>
