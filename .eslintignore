@@ -1,5 +1,0 @@
-# esLintルール
-.eslintrc.js
-
-# 定数値
-/src/env.d.ts

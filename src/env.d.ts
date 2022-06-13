@@ -10,6 +10,7 @@ declare module "*.vue" {
 // モジュール型定義
 declare module "vue3-mq";
 
+/* eslint-disable */
 interface ImportMetaEnv {
   readonly VITE_DB_API_KEY: string
   readonly VITE_DB_AUTH_DOMAIN: string
@@ -18,6 +19,7 @@ interface ImportMetaEnv {
   readonly VITE_DB_MESSAGING_SENDER_ID: string
   readonly VITE_DB_APP_ID: string
 }
+/* eslint-enable */
 
 interface ImportMeta {
   readonly env: ImportMetaEnv
