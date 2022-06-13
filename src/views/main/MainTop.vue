@@ -7,9 +7,25 @@ import Button from "../../components/parts/BasicButton.vue";
   <div>
     <MqResponsive target="sp">
       <p>ShopingListをはじめる</p>
-      <Button title="ログイン" color="#008b8b"></Button>
+      <div class="top-login-buttons">
+        <div class="top-login-button">
+          <Button title="ログイン" color="#008b8b"></Button>
+        </div>
+        <div class="top-login-button">
+          <Button title="新規登録" color="#008b8b"></Button>
+        </div>
+      </div>
     </MqResponsive>
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.top-login-buttons {
+  text-align: center;
+  padding-top: 20vh;
+
+  .top-login-button {
+    margin-bottom: 20px;
+  }
+}
+</style>
