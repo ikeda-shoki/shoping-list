@@ -10,6 +10,7 @@ declare module "*.vue" {
 // モジュール型定義
 declare module "vue3-mq";
 
+// 下記のコメントで囲むことでeslintを無効化する
 /* eslint-disable */
 interface ImportMetaEnv {
   readonly VITE_DB_API_KEY: string
