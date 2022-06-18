@@ -1,17 +1,32 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { currentUser } from "../../class/CurrentUser";
+import { signInGoogle } from "../../logic/auth";
+
+const signIn = () => {
+  signInGoogle();
+};
+</script>
 
 <template>
-  <div class="header">
-    <div class="hader-left">
-      <!-- ロゴを入れる -->
-      <h1 class="header-title">ShopingList</h1>
-    </div>
-    <div class="header-right"></div>
-  </div>
+  <v-toolbar dense>
+    <v-toolbar-title>
+      <span class="header-title">ShopingList</span>
+    </v-toolbar-title>
+
+    <v-btn v-if="currentUser.logInState" icon>
+      <v-icon>mdi-login-variant</v-icon>
+    </v-btn>
+    <v-btn v-else icon @click="signIn()">
+      <v-icon>mdi-login</v-icon>
+    </v-btn>
+  </v-toolbar>
 </template>
 
 <style lang="scss" scoped>
-.header {
-  padding: 10px 20px;
+@import url("https://fonts.googleapis.com/css2?family=Akaya+Kanadaka&family=Fascinate&family=Permanent+Marker&display=swap");
+.header-title {
+  font-size: 23px;
+  font-weight: bold;
+  font-family: "Fascinate", cursive;
 }
 </style>

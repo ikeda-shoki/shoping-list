@@ -8,8 +8,14 @@ const props = defineProps({
 
 <template>
   <v-btn elevation="2" outlined>
-    <span>{{ props.title }}</span>
+    <span class="button-font">{{ props.title }}</span>
   </v-btn>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.button-font {
+  font-weight: bold;
+  color: #e5e2df;
+  text-transform: capitalize;
+}
+</style>

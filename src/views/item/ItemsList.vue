@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { MqResponsive } from "vue3-mq";
 import Button from "../../components/parts/BasicButton.vue";
-import { signInGoogle, signOutGoogle, checkLogInState } from "../../Logic/auth";
+import { signInGoogle, signOutGoogle, checkLogInState } from "../../logic/auth";
 import { currentUser } from "../../class/CurrentUser";
 
 const signIn = () => {

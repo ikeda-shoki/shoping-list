@@ -14,7 +14,6 @@ export const signInGoogle = () => {
 
   signInWithPopup(auth, provider)
     .then((result) => {
-      console.log(result);
       if (!currentUser.value.logInState) {
         currentUser.value.userId = result.user.uid;
         currentUser.value.userName = result.user.displayName;
@@ -26,6 +25,7 @@ export const signInGoogle = () => {
     .catch((error) => {
       console.error(error);
       console.log("ログインに失敗しました");
+      router.push({ path: "/errors" });
     });
 };
 

@@ -1,11 +1,11 @@
 <template>
   <v-app>
     <v-main>
-      <Header></Header>
       <div id="main">
+        <Header></Header>
         <router-view></router-view>
+        <Footer></Footer>
       </div>
-      <Footer></Footer>
     </v-main>
   </v-app>
 </template>
@@ -17,10 +17,16 @@ import Footer from "./components/commons/MainFooter.vue";
 
 <style lang="scss" scoped>
 #main {
-  padding: 10px 20px;
+  background-color: #e5e2df;
+  min-height: 100vh;
+}
+
+header {
+  background-color: #f1a598;
 }
 
 footer {
+  background-color: #f1a598;
   padding: 0;
   position: fixed;
   bottom: 0;
