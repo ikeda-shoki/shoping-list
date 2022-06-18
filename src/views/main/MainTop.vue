@@ -1,20 +1,47 @@
 <script setup lang="ts">
 import { MqResponsive } from "vue3-mq";
 import Button from "../../components/parts/BasicButton.vue";
+import { signInGoogle, signOutGoogle, checkLogInState } from "../../Logic/auth";
+
+const signIn = () => {
+  console.log("ログイン処理を開始します");
+  signInGoogle();
+};
+
+const signOut = () => {
+  console.log("ログアウト処理します");
+  signOutGoogle();
+};
+
+const checkLogin = () => {
+  console.log("確認中");
+  if (checkLogInState()) {
+    console.log("ログイン中");
+  } else {
+    console.log("ログアウト中");
+  }
+};
+
+const userName = "";
 </script>
 
 <template>
   <div>
     <MqResponsive target="sp">
       <p>ShopingListをはじめる</p>
+      <p>Hello, {{ userName }}</p>
       <div class="top-login-buttons">
         <div class="top-login-button">
-          <Button title="ログイン" color="#008b8b"></Button>
+          <Button title="ログイン" color="#008b8b" @click="signIn()"></Button>
         </div>
         <div class="top-login-button">
-          <Button title="新規登録" color="#008b8b"></Button>
+          <Button title="ログアウト" color="#008b8b" @click="signOut()"></Button>
+        </div>
+        <div class="top-login-button">
+          <Button title="確認" color="#008b8b" @click="checkLogin()"></Button>
         </div>
       </div>
+      <router-link to="/itemsList">itemList</router-link>
     </MqResponsive>
   </div>
 </template>

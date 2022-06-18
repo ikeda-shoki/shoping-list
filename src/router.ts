@@ -12,6 +12,7 @@ import Errors from "./views/error/MainError.vue";
 const routes = [
   {
     path: "/",
+    name: 'top',
     component: Top,
   },
   {
@@ -24,24 +25,28 @@ const routes = [
   },
   {
     path: "/itemsList",
+    name: 'itemList',
     component: ItemsList,
   },
   {
     path: "/itemRegist",
+    name: 'itemRegist',
     component: ItemRegist,
   },
   {
     path: "/itemsSave",
+    name: 'itemSave',
     component: ItemsSave,
   },
   {
     path: "/errors",
+    name: 'errors',
     component: Errors,
   },
 ];
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes,
 });
 
