@@ -1,18 +1,18 @@
-import userStore from "./User";
-import { inject } from "vue";
+import { userStore } from "./User";
+import { inject, InjectionKey } from "vue";
 
-export function globalStore() {
-  return {
-    user: userStore(),
-  };
-}
+export const stores = {
+  currentUser: userStore(),
+};
 
-export const globalStoreKey = Symbol("globalStore");
+type States = typeof stores;
+
+export const globalStoreKey: InjectionKey<States> = Symbol("globalStore");
 
 export function useGlogalStore() {
-  const store = inject(globalStoreKey);
-  if (!store) {
+  const stores = inject(globalStoreKey);
+  if (!stores) {
     throw new Error("${globalStoreKey} is not provided");
   }
-  return store;
+  return stores;
 }

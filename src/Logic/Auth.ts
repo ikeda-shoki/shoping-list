@@ -1,12 +1,23 @@
 import firebase from "./FirebaseConfig";
-import { getAuth, signInWithPopup, signOut } from "firebase/auth";
+import { getAuth, signInWithPopup, signOut, User } from "firebase/auth";
 import router from "../router";
-import { currentUser } from "../class/CurrentUser";
+import { stores } from "../store/global";
 
 const auth = getAuth();
 
+function setCurrentUser(user: User, logInState: boolean) {
+  stores.currentUser.userId = user.uid;
+  stores.currentUser.userName = user.displayName;
+  stores.currentUser.userLogInState = logInState;
+  return stores;
+}
+
 export const checkLogInState = () => {
-  return auth.currentUser;
+  if (auth.currentUser) {
+    setCurrentUser(auth.currentUser, true);
+    return true;
+  }
+  return false;
 };
 
 export const signInGoogle = () => {
@@ -14,10 +25,8 @@ export const signInGoogle = () => {
 
   signInWithPopup(auth, provider)
     .then((result) => {
-      if (!currentUser.value.logInState) {
-        currentUser.value.userId = result.user.uid;
-        currentUser.value.userName = result.user.displayName;
-        currentUser.value.logInState = true;
+      if (!stores.currentUser.userLogInState) {
+        setCurrentUser(result.user, true);
       }
       console.log("ログインに成功しました");
       router.push({ path: "/itemsList" });
@@ -33,7 +42,7 @@ export const signOutGoogle = () => {
   signOut(auth)
     .then(() => {
       console.log("サインアウトしました。");
-      currentUser.value.logInState = false;
+      stores.currentUser.userLogInState = false;
       router.push({ path: "/" });
     })
     .catch((error) => {

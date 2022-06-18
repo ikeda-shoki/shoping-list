@@ -2,7 +2,9 @@
 import { MqResponsive } from "vue3-mq";
 import Button from "../../components/parts/BasicButton.vue";
 import { signInGoogle, signOutGoogle, checkLogInState } from "../../logic/auth";
-import { currentUser } from "../../class/CurrentUser";
+import { useGlogalStore } from "../../store/global";
+
+const states = useGlogalStore();
 
 const signIn = () => {
   console.log("ログイン処理を開始します");
@@ -28,7 +30,7 @@ const checkLogin = () => {
   <div>
     <MqResponsive target="sp">
       <p>ShopingList</p>
-      <p>Hello, {{ currentUser.userName }}</p>
+      <p>Hello, {{ states.currentUser.userName }}</p>
       <div class="top-login-buttons">
         <div class="top-login-button">
           <Button title="ログイン" color="#008b8b" @click="signIn()"></Button>

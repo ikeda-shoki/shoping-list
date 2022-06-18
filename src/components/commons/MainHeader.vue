@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { currentUser } from "../../class/CurrentUser";
 import { signInGoogle } from "../../logic/auth";
+import { useGlogalStore } from "../../store/global";
+
+const states = useGlogalStore();
 
 const signIn = () => {
   signInGoogle();
@@ -13,7 +15,7 @@ const signIn = () => {
       <span class="header-title">ShopingList</span>
     </v-toolbar-title>
 
-    <v-btn v-if="currentUser.logInState" icon>
+    <v-btn v-if="states.currentUser.userLogInState" icon>
       <v-icon>mdi-login-variant</v-icon>
     </v-btn>
     <v-btn v-else icon @click="signIn()">
