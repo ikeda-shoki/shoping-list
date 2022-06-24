@@ -1,33 +1,29 @@
 import firebase from "./FirebaseConfig";
-import { getAuth, signInWithPopup, signOut, User } from "firebase/auth";
+import { getAuth, signInWithPopup, signOut } from "firebase/auth";
+import { User, setUser } from "../store/User";
 import router from "../router";
-import { stores } from "../store/global";
+import { addUser, isRegistCheckUser, getUser } from "./FirebaseAction";
 
 const auth = getAuth();
-
-function setCurrentUser(user: User, logInState: boolean) {
-  stores.currentUser.userId = user.uid;
-  stores.currentUser.userName = user.displayName;
-  stores.currentUser.userLogInState = logInState;
-  return stores;
-}
-
-export const checkLogInState = () => {
-  if (auth.currentUser) {
-    setCurrentUser(auth.currentUser, true);
-    return true;
-  }
-  return false;
-};
 
 export const signInGoogle = () => {
   const provider = new firebase.auth.GoogleAuthProvider();
 
   signInWithPopup(auth, provider)
-    .then((result) => {
-      if (!stores.currentUser.userLogInState) {
-        setCurrentUser(result.user, true);
+    .then(async (result) => {
+      const user: User = {
+        userId: result.user.uid,
+        userName: result.user.displayName,
+        loginState: true,
+      };
+      // 下記のログイン確認は別のメソッドを使用する
+      if ((await isRegistCheckUser(user.userId)) == false) {
+        console.log("userを追加します");
+        addUser(user);
       }
+      console.log("userをセットします");
+      setUser(user);
+      localStorage.setItem("uid", user.userId);
       console.log("ログインに成功しました");
       router.push({ path: "/itemsList" });
     })
@@ -42,7 +38,7 @@ export const signOutGoogle = () => {
   signOut(auth)
     .then(() => {
       console.log("サインアウトしました。");
-      stores.currentUser.userLogInState = false;
+      localStorage.removeItem("uid");
       router.push({ path: "/" });
     })
     .catch((error) => {
@@ -52,66 +48,14 @@ export const signOutGoogle = () => {
     });
 };
 
-// const authStore = () => {
-//   console.log('init authStore');
-//   const state = reactive({ isLogin: false, displayName: '', photoURL: ''})
-//   const setUser = (user: DummyUser | null) => {
-//     // userが存在しているかを確認
-//     state.isLogin = !!user
-
-//     // もしuserがいる場合、stateに代入(変動変数に代入)
-//     // 下記の??の意味: 左辺が null または undefined の場合は右辺、それ以外の場合は左辺を戻り値として返す。
-//     // → nullじゃなくて空文字を入れる
-//     if (user) {
-//       state.displayName = user.displayName ?? ''
-//       state.photoURL = user.photoURL ?? ''
-//     }
-//   }
-
-//   const signIn = () => {
-//     const provider = new firebase.auth.GoogleAuthProvider();
-//     const auth = getAuth();
-//     signInWithPopup(auth, provider)
-//       .then((result) => {
-//         // This gives you a Google Access Token. You can use it to access the Google API.
-//         const credential = GoogleAuthProvider.credentialFromResult(result);
-//         if (credential != null) {
-//           const token = credential.accessToken;
-//           // The signed-in user info.
-//           const dummyUser = result.user;
-//           return dummyUser
-//         }
-//       }).catch((error) => {
-//         // Handle Errors here.
-//         const errorCode = error.code;
-//         const errorMessage = error.message;
-//         // The email of the user's account used.
-//         const email = error.customData.email;
-//         // The AuthCredential type that was used.
-//         const credential = GoogleAuthProvider.credentialFromError(error);
-//       })
-//   }
-
-//   return {
-//     state,
-//     setUser,
-//     signIn,
-//   };
-// }
-
-// export default authStore
-
-// export type AuthStore = ReturnType<typeof authStore>;
-
-// // InjectionKeyを使用することでどのコンポーネントでもこの情報を使用可能になる
-// // ただし、main.tsでprovideする必要あり
-// export const authStoreKey: InjectionKey<AuthStore> = Symbol('autoStore');
-
-// export const useAuthStore = () => {
-//   // injectを使用することでInjectionKeyで定義し、provideで設定した値を取ってくることが可能になる
-//   const store = inject(authStoreKey);
-//   if (!store) {
-//     throw new Error(`${authStoreKey} is not provided`);
-//   }
-//   return store;
-// }
+export async function checkLogInState() {
+  const uid = localStorage.getItem("uid");
+  if (uid !== null) {
+    const loginUser = await getUser(uid);
+    if (loginUser !== null) {
+      setUser(loginUser);
+      return true;
+    }
+  }
+  return false;
+}

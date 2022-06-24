@@ -1,5 +1,7 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
+import "firebase/compat/firestore";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_DB_API_KEY,
@@ -15,4 +17,7 @@ if (!firebase.apps.length) {
 }
 
 export const auth = firebase.auth();
+export const db = firebase.firestore();
+export const firesStore = getFirestore();
+export const shopingList = db.collection("shopingList");
 export default firebase;

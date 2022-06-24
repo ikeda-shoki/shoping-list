@@ -16,9 +16,9 @@ const signOut = () => {
   signOutGoogle();
 };
 
-const checkLogin = () => {
+const checkLogin = async () => {
   console.log("確認中");
-  if (checkLogInState()) {
+  if (await checkLogInState()) {
     console.log("ログイン中");
   } else {
     console.log("ログアウト中");
@@ -30,7 +30,7 @@ const checkLogin = () => {
   <div>
     <MqResponsive target="sp">
       <p>ShopingList</p>
-      <p>Hello, {{ states.currentUser.userName }}</p>
+      <p>Hello, {{ states.loginUser.userName }}</p>
       <div class="top-login-buttons">
         <div class="top-login-button">
           <Button title="ログイン" color="#008b8b" @click="signIn()"></Button>

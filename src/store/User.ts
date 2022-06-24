@@ -1,16 +1,24 @@
 import { reactive } from "vue";
+import { stores } from "../store/global";
 
 export type User = {
-  userName: string | null;
   userId: string;
-  userLogInState: boolean;
+  userName: string | null;
+  loginState: boolean;
 };
 
 export function userStore() {
   const user: User = reactive({
-    userName: "",
     userId: "",
-    userLogInState: false,
+    userName: "",
+    loginState: false,
   });
   return user;
+}
+
+export function setUser(user: User) {
+  stores.loginUser.userId = user.userId;
+  stores.loginUser.userName = user.userName;
+  stores.loginUser.loginState = user.loginState;
+  return stores;
 }

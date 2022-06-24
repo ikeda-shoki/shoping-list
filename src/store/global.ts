@@ -2,7 +2,7 @@ import { userStore } from "./User";
 import { inject, InjectionKey } from "vue";
 
 export const stores = {
-  currentUser: userStore(),
+  loginUser: userStore(),
 };
 
 type States = typeof stores;

@@ -15,7 +15,7 @@ const signIn = () => {
       <span class="header-title">ShopingList</span>
     </v-toolbar-title>
 
-    <v-btn v-if="states.currentUser.userLogInState" icon>
+    <v-btn v-if="states.loginUser.loginState" icon>
       <v-icon>mdi-login-variant</v-icon>
     </v-btn>
     <v-btn v-else icon @click="signIn()">

@@ -8,6 +8,7 @@ import ItemsList from "./views/item/ItemsList.vue";
 import ItemRegist from "./views/item/ItemRegist.vue";
 import ItemsSave from "./views/item/ItemsSave.vue";
 import Errors from "./views/error/MainError.vue";
+import { checkLogInState } from "./logic/Auth";
 
 const routes = [
   {
@@ -49,5 +50,14 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+router.beforeEach(async (to) => {
+  if (to.name !== 'top' && to.name !== 'errors') {
+    if (await checkLogInState() === false) {
+      console.log("check")
+      return { name: 'top' }
+    }
+  }
+})
 
 export default router;
