@@ -2,7 +2,8 @@ import firebase from "./FirebaseConfig";
 import { getAuth, signInWithPopup, signOut } from "firebase/auth";
 import { User, setUser } from "../store/User";
 import router from "../router";
-import { addUser, isRegistCheckUser, getUser } from "./FirebaseAction";
+import { addUser, isRegistCheckUser, getUser, getCategorys, getSaveItems } from "./FirebaseAction";
+import { setCategorys } from "../store/Category";
 
 const auth = getAuth();
 
@@ -16,13 +17,14 @@ export const signInGoogle = () => {
         userName: result.user.displayName,
         loginState: true,
       };
-      // 下記のログイン確認は別のメソッドを使用する
       if ((await isRegistCheckUser(user.userId)) == false) {
         console.log("userを追加します");
         addUser(user);
       }
       console.log("userをセットします");
       setUser(user);
+      const categorys = await getCategorys(user.userId);
+      setCategorys(categorys);
       localStorage.setItem("uid", user.userId);
       console.log("ログインに成功しました");
       router.push({ path: "/itemsList" });
@@ -51,11 +53,20 @@ export const signOutGoogle = () => {
 export async function checkLogInState() {
   const uid = localStorage.getItem("uid");
   if (uid !== null) {
-    const loginUser = await getUser(uid);
-    if (loginUser !== null) {
-      setUser(loginUser);
-      return true;
-    }
+    await setStores(uid);
+    return true;
   }
   return false;
+}
+
+export async function setStores(uid: string) {
+  const loginUser = await getUser(uid);
+  const categorys = await getCategorys(uid);
+  categorys.map(async (category) => {
+    await getSaveItems(uid, category.categoryId);
+  });
+  if (loginUser !== null) {
+    await setUser(loginUser);
+    await setCategorys(categorys);
+  }
 }

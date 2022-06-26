@@ -1,58 +1,25 @@
 <script setup lang="ts">
 import { MqResponsive } from "vue3-mq";
-import Button from "../../components/parts/BasicButton.vue";
-import { signInGoogle, signOutGoogle, checkLogInState } from "../../logic/auth";
 import { useGlogalStore } from "../../store/global";
+import CategoryItem from "../../components/parts/CategoryItem.vue";
 
 const states = useGlogalStore();
-
-const signIn = () => {
-  console.log("ログイン処理を開始します");
-  signInGoogle();
-};
-
-const signOut = () => {
-  console.log("ログアウト処理します");
-  signOutGoogle();
-};
-
-const checkLogin = async () => {
-  console.log("確認中");
-  if (await checkLogInState()) {
-    console.log("ログイン中");
-  } else {
-    console.log("ログアウト中");
-  }
-};
 </script>
 
 <template>
   <div>
     <MqResponsive target="sp">
-      <p>ShopingList</p>
-      <p>Hello, {{ states.loginUser.userName }}</p>
-      <div class="top-login-buttons">
-        <div class="top-login-button">
-          <Button title="ログイン" color="#008b8b" @click="signIn()"></Button>
-        </div>
-        <div class="top-login-button">
-          <Button title="ログアウト" color="#008b8b" @click="signOut()"></Button>
-        </div>
-        <div class="top-login-button">
-          <Button title="確認" color="#008b8b" @click="checkLogin()"></Button>
-        </div>
+      <div class="category-items">
+        <template v-for="category in states.categorys" :key="category">
+          <CategoryItem :category="category"></CategoryItem>
+        </template>
       </div>
     </MqResponsive>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.top-login-buttons {
-  text-align: center;
-  padding-top: 20vh;
-
-  .top-login-button {
-    margin-bottom: 20px;
-  }
+.category-items {
+  margin: 5px 10px;
 }
 </style>

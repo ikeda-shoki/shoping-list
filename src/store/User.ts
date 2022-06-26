@@ -1,5 +1,5 @@
 import { reactive } from "vue";
-import { stores } from "../store/global";
+import { stores } from "./global";
 
 export type User = {
   userId: string;
