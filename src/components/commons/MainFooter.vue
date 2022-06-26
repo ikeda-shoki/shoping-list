@@ -3,9 +3,15 @@
 <template>
   <v-footer>
     <v-card-text>
-      <v-btn class="mx-7" icon="mdi-home" variant="plain" size="35px"></v-btn>
-      <v-btn class="mx-7" icon="mdi-email" variant="plain" size="35px"></v-btn>
-      <v-btn class="mx-7" icon="mdi-calendar" variant="plain" size="35px"></v-btn>
+      <router-link to="/itemsList" class="footer-link">
+        <v-icon class="footer-icon">mdi-format-list-bulleted-square</v-icon>
+      </router-link>
+      <router-link to="/itemRegist/category" class="footer-link">
+        <v-icon class="footer-icon">mdi-playlist-plus</v-icon>
+      </router-link>
+      <router-link to="/itemRegist" class="footer-link">
+        <v-icon class="footer-icon">mdi-account-cog</v-icon>
+      </router-link>
     </v-card-text>
   </v-footer>
 </template>
@@ -14,7 +20,23 @@
 .v-card-text {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  text-align: center;
+  justify-content: space-around;
   padding: 0.8rem;
+}
+
+.footer-link {
+  text-decoration: none;
+  color: #4a0c01;
+  font-size: 23px;
+  opacity: 0.5;
+}
+
+.router-link-active {
+  opacity: 1;
+}
+
+.footer-icon {
+  text-decoration: none;
 }
 </style>
