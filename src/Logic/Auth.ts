@@ -2,8 +2,9 @@ import firebase from "./FirebaseConfig";
 import { getAuth, signInWithPopup, signOut } from "firebase/auth";
 import { User, setUser } from "../store/User";
 import router from "../router";
-import { addUser, isRegistCheckUser, getUser, getCategorys, getSaveItems } from "./FirebaseAction";
+import { addUser, isRegistCheckUser, getUser, getCategorys, getSaveItems, getColors } from "./FirebaseAction";
 import { setCategorys } from "../store/Category";
+import { setColor } from "../store/Color";
 
 const auth = getAuth();
 
@@ -62,11 +63,13 @@ export async function checkLogInState() {
 export async function setStores(uid: string) {
   const loginUser = await getUser(uid);
   const categorys = await getCategorys(uid);
+  const colors = await getColors();
   categorys.map(async (category) => {
     await getSaveItems(uid, category.categoryId);
   });
   if (loginUser !== null) {
     await setUser(loginUser);
     await setCategorys(categorys);
+    await setColor(colors);
   }
 }

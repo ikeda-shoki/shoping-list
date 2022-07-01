@@ -1,9 +1,10 @@
 import { firesStore, db } from "./FirebaseConfig";
 import { User } from "../store/User";
-import { categoryConverter, userConverter } from "./FirebaseConverter";
 import { Category, defaultCategorys } from "../store/Category";
-import { doc, setDoc, getDoc, addDoc, collection, getDocs } from "firebase/firestore";
 import { SaveItem } from "../store/SaveItem";
+import { Color } from "../store/Color";
+import { categoryConverter, colorConverter, userConverter } from "./FirebaseConverter";
+import { doc, setDoc, getDoc, addDoc, collection, getDocs } from "firebase/firestore";
 
 export async function addUser(user: User) {
   const docRef = doc(firesStore, "users", user.userId).withConverter(userConverter);
@@ -84,4 +85,18 @@ export async function getSaveItems(uid: string, categoryId: string) {
     saveItems.push(saveItem);
   });
   return saveItems;
+}
+
+export async function getColors() {
+  const collRef = collection(firesStore, "colors/").withConverter(colorConverter);
+  const snapshot = await getDocs(collRef);
+  const colors: Color[] = [];
+  snapshot.docs.map((doc) => {
+    const color: Color = {
+      colorId: doc.data().colorId,
+      color: doc.data().color,
+    };
+    colors.push(color);
+  });
+  return colors;
 }

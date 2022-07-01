@@ -15,21 +15,14 @@ import Header from "./components/commons/MainHeader.vue";
 import Footer from "./components/commons/MainFooter.vue";
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 #main {
   background-color: #e5e2df;
   min-height: 100vh;
+  width: auto;
 }
 
-header {
-  background-color: #f1a598;
-}
-
-footer {
-  background-color: #f1a598;
-  padding: 0;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
+a {
+  text-decoration: none;
 }
 </style>

@@ -2,10 +2,10 @@ import { createRouter, createWebHistory } from "vue-router";
 
 // テンプレート
 import Top from "./views/main/MainTop.vue";
-import Login from "./views/userLogin/UserLogin.vue";
-import Regist from "./views/userLogin/UserRegist.vue";
 import ItemsList from "./views/item/ItemsList.vue";
-import ItemRegist from "./views/item/ItemRegist.vue";
+import CommonRegist from "./views/item/CommonRegist.vue";
+import RegistCategory from "./views/item/RegistCategory.vue";
+import RegistItem from "./views/item/RegistItem.vue";
 import ItemsSave from "./views/item/ItemsSave.vue";
 import Errors from "./views/error/MainError.vue";
 import { checkLogInState } from "./logic/Auth";
@@ -17,22 +17,27 @@ const routes = [
     component: Top,
   },
   {
-    path: "/login",
-    component: Login,
-  },
-  {
-    path: "/regist",
-    component: Regist,
-  },
-  {
     path: "/itemsList",
     name: 'itemList',
     component: ItemsList,
   },
   {
-    path: "/itemRegist",
-    name: 'itemRegist',
-    component: ItemRegist,
+    path: "/regist",
+    name: 'commonRegist',
+    component: CommonRegist,
+    children: [
+      {
+        path: "category",
+        name: 'registCategory',
+        component: RegistCategory,
+      },
+      {
+        path: "/:categoryId/item",
+        name: 'registItem',
+        component: RegistItem,
+        props: true,
+      }
+    ]
   },
   {
     path: "/itemsSave",

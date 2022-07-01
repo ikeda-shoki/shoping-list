@@ -1,7 +1,8 @@
 import { User } from "../store/User";
 import { Category } from "../store/Category";
-import { DocumentData, FirestoreDataConverter, QueryDocumentSnapshot, SnapshotOptions, serverTimestamp } from "firebase/firestore";
+import { Color } from "../store/Color";
 import { SaveItem } from "../store/SaveItem";
+import { DocumentData, FirestoreDataConverter, QueryDocumentSnapshot, SnapshotOptions, serverTimestamp } from "firebase/firestore";
 
 export const userConverter: FirestoreDataConverter<User> = {
   toFirestore(user: User): DocumentData {
@@ -44,6 +45,23 @@ export const categoryConverter: FirestoreDataConverter<Category> = {
       categoryImage: data.categoryImage,
       updateTime: data.updateTime,
       registTime: data.registTime,
+    };
+  },
+};
+
+export const colorConverter: FirestoreDataConverter<Color> = {
+  toFirestore(color: Color): DocumentData {
+    return {
+      colorId: color.colorId,
+      color: color.color,
+    };
+  },
+
+  fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): Color {
+    const data = snapshot.data(options);
+    return {
+      colorId: snapshot.id,
+      color: data.color,
     };
   },
 };

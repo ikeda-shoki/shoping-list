@@ -38,6 +38,10 @@ watch(loginState, () => {
 
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Akaya+Kanadaka&family=Fascinate&family=Permanent+Marker&display=swap");
+
+header {
+  background-color: #f1a598;
+}
 .header-title {
   font-size: 23px;
   font-weight: bold;
