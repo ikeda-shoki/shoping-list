@@ -56,7 +56,6 @@ const onInputText = (e: Event) => {
   border-radius: 5px;
   padding: 5px 10px;
   width: 90%;
-
 }
 
 input:focus {

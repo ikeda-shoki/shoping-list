@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import { getCategoryUrlId } from '../../router';
+import { useGlogalStore } from "../../store/global";
+import { getCategoryUrlId } from "../../router";
+
+const stores = useGlogalStore();
 
 const categoryId = getCategoryUrlId();
+
 </script>
 
 <template>
@@ -11,15 +15,15 @@ const categoryId = getCategoryUrlId();
         <router-link class="regist-header-title" :to="{ name: 'registCategory', params: { categoryId: categoryId } }">
           <h2>Category</h2>
         </router-link>
-        <template v-if="categoryId !== 'new'">
+        <template v-if="stores.registCategory.categoryId !== ''">
           <router-link class="regist-header-title" :to="{ name: 'registItem', params: { categoryId: categoryId } }">
             <h2>Item</h2>
           </router-link>
         </template>
         <template v-else>
-          <div class="regist-header-title">
+          <span class="regist-header-title" :to="{ name: 'registItem', params: { categoryId: categoryId } }">
             <h2>Item</h2>
-          </div>
+          </span>
         </template>
       </div>
       <router-view></router-view>

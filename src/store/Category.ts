@@ -25,6 +25,20 @@ export function categorysStore() {
   return categorys;
 }
 
+export function categoryStore() {
+  const category: Category = reactive(
+    {
+      categoryId: "",
+      categoryName: "",
+      categoryImage: "",
+      categoryColor: "",
+      updateTime: serverTimestamp(),
+      registTime: serverTimestamp(),
+    },
+  );
+  return category;
+}
+
 export function setCategorys(categorysData: Category[]) {
   const categorys: Category[] = [];
   categorysData.map((categoryData) => {
@@ -39,6 +53,19 @@ export function setCategorys(categorysData: Category[]) {
     categorys.push(category);
   });
   stores.categorys = categorys;
+  return stores;
+}
+
+export function setCategory(categoryData: Category) {
+  const category: Category = {
+    categoryId: categoryData.categoryId,
+    categoryName: categoryData.categoryName,
+    categoryColor: categoryData.categoryColor,
+    categoryImage: categoryData.categoryImage,
+    updateTime: categoryData.updateTime,
+    registTime: categoryData.registTime,
+  };
+  stores.registCategory = category;
   return stores;
 }
 

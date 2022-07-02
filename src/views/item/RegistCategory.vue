@@ -3,12 +3,15 @@ import InputTitle, { InputData } from "../../components/parts/InputTitle.vue";
 import InputText, { InputFieldData } from "../../components/parts/InputText.vue";
 import InputColorRadioButton from "../../components/parts/InputColorRadioButton.vue";
 import BasicButton from "../../components/parts/BasicButton.vue";
-import { Category } from "../../store/Category";
+import { Category, setCategory } from "../../store/Category";
 import { moveTop } from "../../logic/MoveTop";
 import { serverTimestamp } from "firebase/firestore";
 import { isRequireError, isMaxlengthError } from "../../logic/FormError";
 import { reactive, ref } from "vue";
 import router from "../../router";
+import { useGlogalStore } from "../../store/global";
+
+const store = useGlogalStore();
 
 const newCategory: Category = reactive({
   categoryId: "",
@@ -44,7 +47,7 @@ function checkCategoryName(categoryName: string, maxlength: number) {
     categoryNameErrorMessages.value.push("カテゴリーネームを入力して下さい");
   }
   if (isMaxlengthError(categoryName, maxlength)) {
-    categoryNameErrorMessages.value.push("カテゴリーネームは" + maxlength + "以内で入力して下さい");
+    categoryNameErrorMessages.value.push("カテゴリーネームは" + maxlength + "文字以内で入力して下さい");
   }
 }
 
@@ -60,7 +63,7 @@ function checkFormError() {
   checkCategoryName(newCategory.categoryName, categoryNameInputFieldData.maxlength);
 }
 
-const toRegistItem = () => {
+const toRegistItemPage = () => {
   checkFormError();
   if (categoryColorErrorMessages.value.length !== 0 || categoryNameErrorMessages.value.length !== 0) {
     moveTop();
@@ -70,18 +73,27 @@ const toRegistItem = () => {
   let params = "new";
   if (newCategory.categoryId !== "") {
     params = newCategory.categoryId;
-  } else {
-    sessionStorage.setItem("newCategoryName", newCategory.categoryName);
-    sessionStorage.setItem("newCategoryColor", newCategory.categoryColor);
   }
+  newCategory.categoryId = params;
+  setCategory(newCategory)
   router.push({ name: "registItem", params: { categoryId: params } });
 };
+
+function checkData() {
+  if(store.registCategory !== null || store.registCategory !== '') {
+    newCategory.categoryId = store.registCategory.categoryId;
+    newCategory.categoryName = store.registCategory.categoryName;
+    newCategory.categoryColor = store.registCategory.categoryColor;
+  }
+}
+
+checkData();
 </script>
 
 <template>
   <div>
     <div class="regist-category">
-      <form class="category-inputs" @submit.prevent="toRegistItem()">
+      <form class="category-inputs" @submit.prevent="toRegistItemPage()">
         <div class="category-input-name">
           <InputTitle :input-data="categoryNameInputData"></InputTitle>
           <InputText

@@ -1,6 +1,6 @@
 import { userStore } from "./User";
 import { inject, InjectionKey } from "vue";
-import { categorysStore } from "./Category";
+import { categorysStore, categoryStore } from "./Category";
 import { itemsStore } from "./Item";
 import { colorStore } from "./Color";
 
@@ -9,6 +9,7 @@ export const stores = {
   categorys: categorysStore(),
   items: itemsStore(),
   colors: colorStore(),
+  registCategory: categoryStore(),
 };
 
 type States = typeof stores;
