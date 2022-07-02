@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "@vue/reactivity";
+import ErrorMessage from "./ErrorMessage.vue";
 
 export type InputFieldData = {
   id: string;
@@ -19,17 +19,13 @@ const onInputText = (e: Event) => {
   const target = e.target as HTMLInputElement;
   emits("update:modelValue", target.value);
 };
-
-computed;
 </script>
 
 <template>
   <div class="input-text">
-    <div v-if="errorMessages.length !== 0" class="error-messaes">
-      <template v-for="errorMessage in errorMessages" :key="errorMessage">
-        <p>{{ errorMessage }}</p>
-      </template>
-    </div>
+    <template v-if="errorMessages.length !== 0">
+      <ErrorMessage :error-messages="props.errorMessages"></ErrorMessage>
+    </template>
     <input
       :id="inputFieldData.id"
       class="input-field"
@@ -60,5 +56,11 @@ computed;
   border-radius: 5px;
   padding: 5px 10px;
   width: 90%;
+
+}
+
+input:focus {
+  background-color: #e5e2df;
+  outline: none;
 }
 </style>

@@ -1,4 +1,5 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+</script>
 
 <template>
   <v-footer>
@@ -6,7 +7,7 @@
       <router-link to="/itemsList" class="footer-link">
         <v-icon class="footer-icon">mdi-format-list-bulleted-square</v-icon>
       </router-link>
-      <router-link to="/regist/category" class="footer-link">
+      <router-link :to="{ name: 'commonRegist' }" class="footer-link">
         <v-icon class="footer-icon">mdi-playlist-plus</v-icon>
       </router-link>
       <router-link to="/itemRegist" class="footer-link">

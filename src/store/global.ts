@@ -1,13 +1,13 @@
 import { userStore } from "./User";
 import { inject, InjectionKey } from "vue";
 import { categorysStore } from "./Category";
-import { saveItemsStore } from "./SaveItem";
+import { itemsStore } from "./Item";
 import { colorStore } from "./Color";
 
 export const stores = {
   loginUser: userStore(),
   categorys: categorysStore(),
-  saveItems: saveItemsStore(),
+  items: itemsStore(),
   colors: colorStore(),
 };
 

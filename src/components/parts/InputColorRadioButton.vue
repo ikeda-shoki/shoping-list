@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ErrorMessage from "./ErrorMessage.vue";
 import { Color } from "../../store/Color";
 import { useGlogalStore } from "../../store/global";
 import { ref } from "vue";
@@ -34,11 +35,9 @@ const onClick = (color: Color) => {
 <template>
   <div class="color-buttons">
     <div class="input-color-radio-buttons">
-      <div v-if="errorMessages.length !== 0" class="error-messaes">
-        <template v-for="errorMessage in errorMessages" :key="errorMessage">
-          <p>{{ errorMessage }}</p>
-        </template>
-      </div>
+      <template v-if="errorMessages.length !== 0">
+        <ErrorMessage :error-messages="props.errorMessages"></ErrorMessage>
+      </template>
       <template v-for="color in colors" :key="color">
         <div class="input-color" :style="{ backgroundColor: color.color }" :class="{ active: isActiveColor === color.color }" @click="onClick(color)">
           <div class="inner"></div>

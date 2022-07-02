@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory, useRoute } from "vue-router";
 
 // テンプレート
 import Top from "./views/main/MainTop.vue";
@@ -25,14 +25,16 @@ const routes = [
     path: "/regist",
     name: 'commonRegist',
     component: CommonRegist,
+    redirect: '/category/new',
     children: [
       {
-        path: "category",
+        path: "/category/:categoryId",
         name: 'registCategory',
         component: RegistCategory,
+        props: true
       },
       {
-        path: "/:categoryId/item",
+        path: "/category/:categoryId/item",
         name: 'registItem',
         component: RegistItem,
         props: true,
@@ -64,5 +66,13 @@ router.beforeEach(async (to) => {
     }
   }
 })
+
+export function getCategoryUrlId() {
+  const categoryUrlId = useRoute().params['categoryId'];
+  if (typeof categoryUrlId === "string") {
+    return categoryUrlId
+  }
+  return "new"
+}
 
 export default router;

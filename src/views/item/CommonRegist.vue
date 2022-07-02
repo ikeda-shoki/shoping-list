@@ -1,32 +1,29 @@
 <script setup lang="ts">
-import { MqResponsive } from "vue3-mq";
-import { useRoute } from "vue-router";
+import { getCategoryUrlId } from '../../router';
 
-const route = useRoute();
-
-const categoryId = route.params;
+const categoryId = getCategoryUrlId();
 </script>
 
 <template>
   <div>
-    <MqResponsive target="sp">
-      <div class="common-regist">
-        <div class="regist-header">
-          <router-link class="regist-header-title" to="/regist/category">
-            <h2>Category</h2>
+    <div class="common-regist">
+      <div class="regist-header">
+        <router-link class="regist-header-title" :to="{ name: 'registCategory', params: { categoryId: categoryId } }">
+          <h2>Category</h2>
+        </router-link>
+        <template v-if="categoryId !== 'new'">
+          <router-link class="regist-header-title" :to="{ name: 'registItem', params: { categoryId: categoryId } }">
+            <h2>Item</h2>
           </router-link>
-          <div v-if="Object.keys(categoryId).length">
-            <router-link class="regist-header-title" :to="{ name: 'registItem', params: { id: categoryId } }">
-              <h2>Item</h2>
-            </router-link>
-          </div>
-          <div v-else class="regist-header-title">
+        </template>
+        <template v-else>
+          <div class="regist-header-title">
             <h2>Item</h2>
           </div>
-        </div>
-        <router-view></router-view>
+        </template>
       </div>
-    </MqResponsive>
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -58,7 +55,7 @@ const categoryId = route.params;
       background-color: #f1a598;
 
       h2 {
-        font-size: 26px;
+        font-size: 22px;
       }
     }
   }
