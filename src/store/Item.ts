@@ -1,6 +1,7 @@
+import { Category, setCategoryItems } from "./Category";
+import { getItems } from "../logic/FirebaseAction";
 import { serverTimestamp, FieldValue } from "firebase/firestore";
 import { reactive } from "vue";
-import { stores } from "./global";
 
 export type Item = {
   itemId: string;
@@ -23,18 +24,11 @@ export function itemsStore() {
   return items;
 }
 
-export function setitems(itemsData: Item[]) {
-  const items: Item[] = [];
-  itemsData.map((itemData) => {
-    const item: Item = {
-      itemId: itemData.itemId,
-      itemName: itemData.itemName,
-      categoryId: itemData.categoryId,
-      updateTime: itemData.updateTime,
-      registTime: itemData.registTime,
-    };
-    items.push(item);
-  });
-  stores.items = items;
-  return stores;
+export async function setItems(categorysData: Category[], uid: string) {
+  await Promise.all(
+    categorysData.map(async (category: Category) => {
+      const registItems: Item[] = await getItems(uid, category.categoryId, "registItems");
+      await setCategoryItems(category, registItems, "registItems");
+    })
+  );
 }

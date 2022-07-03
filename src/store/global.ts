@@ -12,7 +12,7 @@ export const stores = {
   registCategory: categoryStore(),
 };
 
-type States = typeof stores;
+export type States = typeof stores;
 
 export const globalStoreKey: InjectionKey<States> = Symbol("globalStore");
 

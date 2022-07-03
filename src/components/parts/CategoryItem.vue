@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import { defineProps } from "vue";
+import RegistItem from "./RegistItem.vue";
 import { Category } from "../../store/Category";
-import { useGlogalStore } from "../../store/global";
-import SaveItem from "../../components/parts/SaveItem.vue";
-
-const states = useGlogalStore();
+import { Item } from "../../store/Item";
+import { defineProps } from "vue";
 
 defineProps<{
   category: Category;
 }>();
+
+const emits = defineEmits<{
+  (e: "deleteItem", item: Item): void;
+}>();
+
+const deleteItem = (item: Item) => {
+  emits("deleteItem", item);
+};
 </script>
 
 <template>
@@ -20,8 +26,8 @@ defineProps<{
       </span>
     </div>
     <div class="save-items">
-      <template v-for="saveItem in states.saveItems" :key="saveItem">
-        <SaveItem></SaveItem>
+      <template v-for="item in category.registItems" :key="item">
+        <RegistItem :item="item" :color="category.categoryColor" @delete-item="deleteItem($event)"></RegistItem>
       </template>
     </div>
   </div>

@@ -1,11 +1,10 @@
 import { firesStore, db } from "./FirebaseConfig";
 import { User } from "../store/User";
 import { Category, defaultCategorys } from "../store/Category";
-import { SaveItem } from "../store/SaveItem";
 import { Color } from "../store/Color";
 import { Item } from "../store/Item";
 import { categoryConverter, colorConverter, userConverter } from "./FirebaseConverter";
-import { doc, setDoc, getDoc, addDoc, collection, getDocs, CollectionReference } from "firebase/firestore";
+import { doc, setDoc, getDoc, addDoc, collection, getDocs, CollectionReference, deleteDoc } from "firebase/firestore";
 
 export async function addUser(user: User) {
   const docRef = doc(firesStore, "users", user.userId).withConverter(userConverter);
@@ -80,27 +79,28 @@ export async function getCategorys(uid: string) {
       categoryImage: doc.data().categoryImage,
       updateTime: doc.data().updateTime,
       registTime: doc.data().registTime,
+      registItems: [],
     };
     categorys.push(category);
   });
   return categorys;
 }
 
-export async function getSaveItems(uid: string, categoryId: string) {
-  const collRef = db.collection("users").doc(uid).collection("categoryId").doc(categoryId).collection("saveItems");
+export async function getItems(uid: string, categoryId: string, type: string) {
+  const collRef = db.collection("users").doc(uid).collection("categorys").doc(categoryId).collection(type);
   const snapshot = await getDocs(collRef);
-  const saveItems: SaveItem[] = [];
+  const items: Item[] = [];
   snapshot.docs.map((doc) => {
-    const saveItem: SaveItem = {
-      saveItemId: doc.data().saveItemId,
-      saveItemName: doc.data().saveItemName,
+    const item: Item = {
+      itemId: doc.id,
+      itemName: doc.data().itemName,
       categoryId: categoryId,
       updateTime: doc.data().updateTime,
       registTime: doc.data().registTime,
     };
-    saveItems.push(saveItem);
+    items.push(item);
   });
-  return saveItems;
+  return items;
 }
 
 export async function getColors() {
@@ -115,4 +115,9 @@ export async function getColors() {
     colors.push(color);
   });
   return colors;
+}
+
+export async function deleteItemData(item: Item, categoryId: string, uid: string) {
+  const itemDocRef = doc(firesStore, "users", uid, "categorys", categoryId, "registItems", item.itemId);
+  await deleteDoc(itemDocRef);
 }
