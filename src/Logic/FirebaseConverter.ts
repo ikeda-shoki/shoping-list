@@ -1,7 +1,6 @@
 import { User } from "../store/User";
 import { Category } from "../store/Category";
 import { Color } from "../store/Color";
-import { SaveItem } from "../store/SaveItem";
 import { DocumentData, FirestoreDataConverter, QueryDocumentSnapshot, SnapshotOptions, serverTimestamp } from "firebase/firestore";
 
 export const userConverter: FirestoreDataConverter<User> = {
@@ -67,24 +66,47 @@ export const colorConverter: FirestoreDataConverter<Color> = {
 };
 
 // 下記使用していないので、最終的に削除予定、そもそもConveterterいらない？
-export const saveItemConverter: FirestoreDataConverter<SaveItem> = {
-  toFirestore(saveItem: SaveItem): DocumentData {
-    return {
-      saveItemId: saveItem.saveItemId,
-      categoryName: saveItem.saveItemName,
-      registTime: serverTimestamp(),
-      updateTime: serverTimestamp(),
-    };
-  },
+// export const itemConverter: FirestoreDataConverter<Item> = {
+//   toFirestore(item: Item): DocumentData {
+//     return {
+//       id: "",
+//       itemName: item.itemName,
+//       registTime: serverTimestamp(),
+//       updateTime: serverTimestamp(),
+//     };
+//   },
 
-  fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): SaveItem {
-    const data = snapshot.data(options);
-    return {
-      saveItemId: snapshot.id,
-      saveItemName: data.saveItemName,
-      categoryId: null,
-      updateTime: data.updateTime,
-      registTime: data.registTime,
-    };
-  },
-};
+//   fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): Item {
+//     const data = snapshot.data(options);
+//     return {
+//       itemId: snapshot.id,
+//       itemName: data.itemName,
+//       categoryId: "",
+//       registTime: data.registTime,
+//       updateTime: data.updateTime,
+//     };
+//   },
+// };
+
+// 下記使用していないので、最終的に削除予定、そもそもConveterterいらない？
+// export const saveItemConverter: FirestoreDataConverter<SaveItem> = {
+//   toFirestore(saveItem: SaveItem): DocumentData {
+//     return {
+//       saveItemId: saveItem.saveItemId,
+//       categoryName: saveItem.saveItemName,
+//       registTime: serverTimestamp(),
+//       updateTime: serverTimestamp(),
+//     };
+//   },
+
+//   fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): SaveItem {
+//     const data = snapshot.data(options);
+//     return {
+//       saveItemId: snapshot.id,
+//       saveItemName: data.saveItemName,
+//       categoryId: null,
+//       updateTime: data.updateTime,
+//       registTime: data.registTime,
+//     };
+//   },
+// };

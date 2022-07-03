@@ -26,16 +26,14 @@ export function categorysStore() {
 }
 
 export function categoryStore() {
-  const category: Category = reactive(
-    {
-      categoryId: "",
-      categoryName: "",
-      categoryImage: "",
-      categoryColor: "",
-      updateTime: serverTimestamp(),
-      registTime: serverTimestamp(),
-    },
-  );
+  const category: Category = reactive({
+    categoryId: "",
+    categoryName: "",
+    categoryImage: "",
+    categoryColor: "",
+    updateTime: serverTimestamp(),
+    registTime: serverTimestamp(),
+  });
   return category;
 }
 
@@ -89,3 +87,13 @@ export const defaultCategorys: Category[] = [
     updateTime: serverTimestamp(),
   },
 ];
+
+export function getCategoryId(categorys: Category[], categoryName: string) {
+  let categoryId = "";
+  categorys.map((category: Category) => {
+    if (category.categoryName === categoryName) {
+      categoryId = category.categoryId;
+    }
+  });
+  return categoryId;
+}

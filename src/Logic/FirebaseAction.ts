@@ -3,8 +3,9 @@ import { User } from "../store/User";
 import { Category, defaultCategorys } from "../store/Category";
 import { SaveItem } from "../store/SaveItem";
 import { Color } from "../store/Color";
+import { Item } from "../store/Item";
 import { categoryConverter, colorConverter, userConverter } from "./FirebaseConverter";
-import { doc, setDoc, getDoc, addDoc, collection, getDocs } from "firebase/firestore";
+import { doc, setDoc, getDoc, addDoc, collection, getDocs, CollectionReference } from "firebase/firestore";
 
 export async function addUser(user: User) {
   const docRef = doc(firesStore, "users", user.userId).withConverter(userConverter);
@@ -40,7 +41,7 @@ export async function addDefaultCategorys(uid: string) {
   });
 }
 
-async function addCategory(category: Category, uid: string) {
+export async function addCategory(category: Category, uid: string) {
   const categoryUrl = "users/" + uid + "/categorys";
   await addDoc(collection(db, categoryUrl), {
     categoryName: category.categoryName,
@@ -48,6 +49,21 @@ async function addCategory(category: Category, uid: string) {
     categoryColor: category.categoryColor,
     updateTime: category.updateTime,
     registTime: category.registTime,
+  });
+}
+
+export async function addRegistItems(registItems: Item[], uid: string, categoryId: string) {
+  const registItemsCollectionRef = collection(db, "users/" + uid + "/categorys/" + categoryId + "/registItems");
+  await registItems.map((registItem: Item) => {
+    addRegistItem(registItem, registItemsCollectionRef);
+  });
+}
+
+export async function addRegistItem(item: Item, registItemsCollectionRef: CollectionReference) {
+  await addDoc(registItemsCollectionRef, {
+    itemName: item.itemName,
+    updateTime: item.updateTime,
+    registTime: item.registTime,
   });
 }
 

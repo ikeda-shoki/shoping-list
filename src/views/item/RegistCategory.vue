@@ -7,9 +7,9 @@ import { Category, setCategory } from "../../store/Category";
 import { moveTop } from "../../logic/MoveTop";
 import { serverTimestamp } from "firebase/firestore";
 import { isRequireError, isMaxlengthError } from "../../logic/FormError";
+import { useGlogalStore } from "../../store/global";
 import { reactive, ref } from "vue";
 import router from "../../router";
-import { useGlogalStore } from "../../store/global";
 
 const store = useGlogalStore();
 
@@ -42,7 +42,7 @@ const categoryNameErrorMessages = ref<string[]>([]);
 const categoryColorErrorMessages = ref<string[]>([]);
 
 function checkCategoryName(categoryName: string, maxlength: number) {
-  categoryNameErrorMessages.value.length = 0;
+  categoryNameErrorMessages.value = [];
   if (isRequireError(categoryName)) {
     categoryNameErrorMessages.value.push("カテゴリーネームを入力して下さい");
   }
@@ -52,7 +52,7 @@ function checkCategoryName(categoryName: string, maxlength: number) {
 }
 
 function checkCategoryColor(categoryColor: string) {
-  categoryColorErrorMessages.value.length = 0;
+  categoryColorErrorMessages.value = [];
   if (isRequireError(categoryColor)) {
     categoryColorErrorMessages.value.push("カテゴリーカラーを選択して下さい");
   }
@@ -75,12 +75,12 @@ const toRegistItemPage = () => {
     params = newCategory.categoryId;
   }
   newCategory.categoryId = params;
-  setCategory(newCategory)
+  setCategory(newCategory);
   router.push({ name: "registItem", params: { categoryId: params } });
 };
 
 function checkData() {
-  if(store.registCategory !== null || store.registCategory !== '') {
+  if (store.registCategory !== null || store.registCategory !== "") {
     newCategory.categoryId = store.registCategory.categoryId;
     newCategory.categoryName = store.registCategory.categoryName;
     newCategory.categoryColor = store.registCategory.categoryColor;

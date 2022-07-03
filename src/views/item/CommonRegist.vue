@@ -5,7 +5,6 @@ import { getCategoryUrlId } from "../../router";
 const stores = useGlogalStore();
 
 const categoryId = getCategoryUrlId();
-
 </script>
 
 <template>
