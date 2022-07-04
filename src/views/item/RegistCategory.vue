@@ -3,21 +3,24 @@ import InputTitle, { InputData } from "../../components/parts/InputTitle.vue";
 import InputText, { InputFieldData } from "../../components/parts/InputText.vue";
 import InputColorRadioButton from "../../components/parts/InputColorRadioButton.vue";
 import BasicButton from "../../components/parts/BasicButton.vue";
-import { Category, setCategory } from "../../store/Category";
+import { Category, setCategory, categoryStore } from "../../store/Category";
 import { moveTop } from "../../logic/MoveTop";
 import { serverTimestamp } from "firebase/firestore";
 import { isRequireError, isMaxlengthError } from "../../logic/FormError";
-import { useGlogalStore } from "../../store/global";
+import { useGlogalStore, States } from "../../store/global";
+import router, { getCategoryUrlId } from "../../router";
 import { reactive, ref } from "vue";
-import router from "../../router";
 
-const store = useGlogalStore();
+const state = ref<States>(useGlogalStore());
+
+const categoryUrlId = ref<string>(getCategoryUrlId());
 
 const newCategory: Category = reactive({
   categoryId: "",
   categoryName: "",
   categoryColor: "",
   categoryImage: "",
+  registItems: [],
   updateTime: serverTimestamp(),
   registTime: serverTimestamp(),
 });
@@ -79,15 +82,22 @@ const toRegistItemPage = () => {
   router.push({ name: "registItem", params: { categoryId: params } });
 };
 
-function checkData() {
-  if (store.registCategory !== null || store.registCategory !== "") {
-    newCategory.categoryId = store.registCategory.categoryId;
-    newCategory.categoryName = store.registCategory.categoryName;
-    newCategory.categoryColor = store.registCategory.categoryColor;
+function checkCategoryData() {
+  if (categoryUrlId.value === state.value.registCategory.categoryId) {
+    state.value.categorys.map((category: Category) => {
+      if (category.categoryId === categoryUrlId.value) {
+        newCategory.categoryId = category.categoryId;
+        newCategory.categoryName = category.categoryName;
+        newCategory.categoryColor = category.categoryColor;
+        newCategory.categoryImage = category.categoryImage;
+      }
+    });
+  } else if (categoryUrlId.value === "new") {
+    state.value.registCategory = categoryStore();
   }
 }
 
-checkData();
+checkCategoryData();
 </script>
 
 <template>

@@ -2,7 +2,7 @@
 import RegistItem from "./RegistItem.vue";
 import { Category } from "../../store/Category";
 import { Item } from "../../store/Item";
-import { defineProps } from "vue";
+import router from "../../router";
 
 defineProps<{
   category: Category;
@@ -15,13 +15,17 @@ const emits = defineEmits<{
 const deleteItem = (item: Item) => {
   emits("deleteItem", item);
 };
+
+function toRegistItemPage(categoryId: string) {
+  router.push({ name: "registItem", params: { categoryId: categoryId } });
+}
 </script>
 
 <template>
   <div :style="{ backgroundColor: category.categoryColor }" class="category-item">
     <div class="category-header">
       <h3 class="category-name">{{ category.categoryName }}</h3>
-      <span class="category-regist-button">
+      <span class="category-regist-button" @click="toRegistItemPage(category.categoryId)">
         <v-icon>mdi-plus-circle-outline</v-icon>
       </span>
     </div>

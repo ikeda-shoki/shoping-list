@@ -3,23 +3,23 @@ import InputTitle, { InputData } from "../../components/parts/InputTitle.vue";
 import InputText, { InputFieldData } from "../../components/parts/InputText.vue";
 import BasicButton from "../../components/parts/BasicButton.vue";
 import ErrorMessage from "../../components/parts/ErrorMessage.vue";
+import ItemList from "../../components/commons/ItemList.vue";
 import { Item } from "../../store/Item";
 import { moveTop } from "../../logic/MoveTop";
 import { serverTimestamp } from "firebase/firestore";
-import { addCategory, getCategorys, addRegistItems } from "../../logic/FirebaseAction";
+import { addCategory, getCategorys, addRegistItems, getCategory } from "../../logic/FirebaseAction";
 import { isRequireError, isMaxlengthError } from "../../logic/FormError";
-import { useGlogalStore } from "../../store/global";
-import { getCategoryId } from "../../store/Category";
+import { useGlogalStore, States } from "../../store/global";
+import { categoryStore, getCategoryId } from "../../store/Category";
+import router, { getCategoryUrlId } from "../../router";
 import { reactive, ref } from "vue";
-import ItemList from "../../components/commons/ItemList.vue";
-import router from "../../router";
 
-const state = useGlogalStore();
+const state = ref<States>(useGlogalStore());
 
 const newItem: Item = reactive({
   itemId: "",
   itemName: "",
-  categoryId: state.registCategory.categoryId,
+  categoryId: state.value.registCategory.categoryId,
   updateTime: serverTimestamp(),
   registTime: serverTimestamp(),
 });
@@ -104,14 +104,37 @@ async function registItems() {
     return;
   }
 
+  let registCategoryId = state.value.registCategory.categoryId;
+  // 新規カテゴリー登録処理
+  if (state.value.registCategory.categoryId === "new") {
+    await addCategory(state.value.registCategory, state.value.loginUser.userId);
+    const newCategorys = await getCategorys(state.value.loginUser.userId);
+    registCategoryId = await getCategoryId(newCategorys, state.value.registCategory.categoryName);
+  }
   // アイテム登録処理
-  await addCategory(state.registCategory, state.loginUser.userId);
-  const newCategorys = await getCategorys(state.loginUser.userId);
-  const registCategoryId = await getCategoryId(newCategorys, state.registCategory.categoryName);
-  await addRegistItems(newItems.value, state.loginUser.userId, registCategoryId);
+  await addRegistItems(newItems.value, state.value.loginUser.userId, registCategoryId);
+
+  state.value.registCategory = await categoryStore();
 
   await router.push({ path: "/itemsList" });
 }
+
+async function checkCategoryData() {
+  const categoryUrlId = getCategoryUrlId();
+  if (categoryUrlId !== state.value.registCategory.categoryId) {
+    const category = await getCategory(state.value.loginUser.userId, categoryUrlId);
+
+    if (category !== null) {
+      state.value.registCategory = category;
+    }
+  }
+}
+
+function toRegistCategoryPage() {
+  router.push({ name: "registCategory", params: { categoryId: state.value.registCategory.categoryId } });
+}
+
+checkCategoryData();
 </script>
 
 <template>
@@ -148,7 +171,7 @@ async function registItems() {
         </div>
 
         <div class="item-input-button">
-          <BasicButton title="カテゴリーに戻る" font-color="{ text-color: white }" color="#B4C0B3"></BasicButton>
+          <BasicButton title="カテゴリーに戻る" font-color="{ text-color: white }" color="#B4C0B3" @click="toRegistCategoryPage()"></BasicButton>
           <BasicButton
             type="submit"
             title="アイテムを登録する"

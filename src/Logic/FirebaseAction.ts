@@ -86,6 +86,25 @@ export async function getCategorys(uid: string) {
   return categorys;
 }
 
+// 下記メソッド使用していないため、削除予定
+export async function getCategory(uid: string, categoryId: string) {
+  const categoryDocRef = doc(firesStore, "users", uid, "categorys", categoryId).withConverter(categoryConverter);
+  const categoryDocShot = await getDoc(categoryDocRef);
+  if (categoryDocShot.exists()) {
+    const category: Category = {
+      categoryId: categoryDocShot.data().categoryId,
+      categoryName: categoryDocShot.data().categoryName,
+      categoryColor: categoryDocShot.data().categoryColor,
+      categoryImage: categoryDocShot.data().categoryImage,
+      registItems: [],
+      updateTime: categoryDocShot.data().updateTime,
+      registTime: categoryDocShot.data().registTime,
+    };
+    return category;
+  }
+  return null;
+}
+
 export async function getItems(uid: string, categoryId: string, type: string) {
   const collRef = db.collection("users").doc(uid).collection("categorys").doc(categoryId).collection(type);
   const snapshot = await getDocs(collRef);

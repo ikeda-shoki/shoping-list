@@ -1,29 +1,20 @@
 <script setup lang="ts">
-import { useGlogalStore } from "../../store/global";
-import { getCategoryUrlId } from "../../router";
+import { ref } from "vue";
+import { useRoute } from "vue-router";
 
-const stores = useGlogalStore();
-
-const categoryId = getCategoryUrlId();
+const categoryId = ref<string>(useRoute().path);
 </script>
 
 <template>
   <div>
     <div class="common-regist">
       <div class="regist-header">
-        <router-link class="regist-header-title" :to="{ name: 'registCategory', params: { categoryId: categoryId } }">
+        <div class="regist-header-title" :class="{ active: categoryId.indexOf('item') < 0 }">
           <h2>Category</h2>
-        </router-link>
-        <template v-if="stores.registCategory.categoryId !== ''">
-          <router-link class="regist-header-title" :to="{ name: 'registItem', params: { categoryId: categoryId } }">
-            <h2>Item</h2>
-          </router-link>
-        </template>
-        <template v-else>
-          <span class="regist-header-title" :to="{ name: 'registItem', params: { categoryId: categoryId } }">
-            <h2>Item</h2>
-          </span>
-        </template>
+        </div>
+        <div class="regist-header-title" :class="{ active: categoryId.indexOf('item') >= 0 }">
+          <h2>Item</h2>
+        </div>
       </div>
       <router-view></router-view>
     </div>
@@ -54,7 +45,7 @@ const categoryId = getCategoryUrlId();
       }
     }
 
-    .router-link-active {
+    .active {
       background-color: #f1a598;
 
       h2 {

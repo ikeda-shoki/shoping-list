@@ -69,7 +69,7 @@ router.beforeEach(async (to) => {
 
 export function getCategoryUrlId() {
   const categoryUrlId = useRoute().params['categoryId'];
-  if (typeof categoryUrlId === "string") {
+  if (typeof categoryUrlId === "string" && categoryUrlId !== "new") {
     return categoryUrlId
   }
   return "new"
