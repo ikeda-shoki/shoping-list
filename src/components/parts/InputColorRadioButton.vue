@@ -50,7 +50,7 @@ const onClick = (color: Color) => {
 <style lang="scss" scoped>
 .color-buttons {
   margin: 20px 0 20px;
-  max-width: 400px;
+  max-width: 800px;
 
   .input-color-radio-buttons {
     display: flex;

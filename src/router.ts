@@ -61,7 +61,6 @@ const router = createRouter({
 router.beforeEach(async (to) => {
   if (to.name !== 'top' && to.name !== 'errors') {
     if (await checkLogInState() === false) {
-      console.log("check")
       return { name: 'top' }
     }
   }

@@ -1,3 +1,8 @@
+<script lang="ts" setup>
+import Header from "./components/commons/MainHeader.vue";
+import Footer from "./components/commons/MainFooter.vue";
+</script>
+
 <template>
   <v-app>
     <v-main>
@@ -10,16 +15,10 @@
   </v-app>
 </template>
 
-<script lang="ts" setup>
-import Header from "./components/commons/MainHeader.vue";
-import Footer from "./components/commons/MainFooter.vue";
-</script>
-
 <style lang="scss">
 #main {
   background-color: #e5e2df;
   min-height: 100vh;
-  width: auto;
 }
 
 a {

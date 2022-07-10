@@ -2,7 +2,6 @@
 import CategoryItem from "../../components/parts/CategoryItem.vue";
 import { Item } from "../../store/Item";
 import { deleteItemData } from "../../logic/FirebaseAction";
-import { MqResponsive } from "vue3-mq";
 import { useGlogalStore, States } from "../../store/global";
 import { ref } from "vue";
 
@@ -21,19 +20,18 @@ const deleteItem = async (item: Item, categoryId: string) => {
 
 <template>
   <div>
-    <MqResponsive target="sp">
-      <div class="category-items">
-        <template v-for="category in states.categorys" :key="category">
-          <CategoryItem :category="category" @delete-item="deleteItem($event, category.categoryId)"></CategoryItem>
-        </template>
-      </div>
-    </MqResponsive>
+    <div class="category-items">
+      <template v-for="category in states.categorys" :key="category">
+        <CategoryItem :category="category" @delete-item="deleteItem($event, category.categoryId)"></CategoryItem>
+      </template>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .category-items {
-  margin: 5px 10px 60px;
-  padding-bottom: 50px;
+  margin: 5px auto 60px;
+  padding: 0 10px 50px;
+  max-width: 600px;
 }
 </style>

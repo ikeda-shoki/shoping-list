@@ -20,15 +20,12 @@ export const signInGoogle = () => {
         loginState: true,
       };
       if ((await isRegistCheckUser(user.userId)) == false) {
-        console.log("userを追加します");
         addUser(user);
       }
-      console.log("userをセットします");
       setUser(user);
       const categorys = await getCategorys(user.userId);
       setCategorys(categorys);
       localStorage.setItem("uid", user.userId);
-      console.log("ログインに成功しました");
       router.push({ path: "/itemsList" });
     })
     .catch((error) => {
@@ -41,7 +38,6 @@ export const signInGoogle = () => {
 export const signOutGoogle = () => {
   signOut(auth)
     .then(() => {
-      console.log("サインアウトしました。");
       localStorage.removeItem("uid");
       router.push({ path: "/" });
     })

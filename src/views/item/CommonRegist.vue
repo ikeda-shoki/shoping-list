@@ -23,8 +23,11 @@ const categoryId = ref<string>(useRoute().path);
 
 <style lang="scss" scoped>
 .common-regist {
+  max-width: 800px;
+  margin: 0 auto;
   .regist-header {
-    padding: 10px 5px 0 5px;
+    padding-top: 10px;
+    margin: 0 5px;
     border-bottom: #f1a598 5px solid;
     display: flex;
     flex-direction: row;

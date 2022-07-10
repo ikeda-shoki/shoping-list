@@ -33,6 +33,9 @@ function toRegistItemPage(categoryId: string) {
       <template v-for="item in category.registItems" :key="item">
         <RegistItem :item="item" :color="category.categoryColor" @delete-item="deleteItem($event)"></RegistItem>
       </template>
+      <template v-if="category.registItems.length === 0">
+        <p>登録されたアイテムはありません</p>
+      </template>
     </div>
   </div>
 </template>
