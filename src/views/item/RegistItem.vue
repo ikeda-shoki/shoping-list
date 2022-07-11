@@ -104,7 +104,7 @@ async function registItems() {
       moveTop();
       return;
     }
-  
+
     let registCategoryId = state.value.registCategory.categoryId;
     // 新規カテゴリー登録処理
     if (state.value.registCategory.categoryId === "new") {
@@ -118,14 +118,13 @@ async function registItems() {
     }
     // アイテム登録処理
     await addRegistItems(newItems.value, state.value.loginUser.userId, registCategoryId);
-  
+
     state.value.registCategory = await categoryStore();
-  
+
     await router.push({ path: "/itemsList" });
-  }
-  catch (error) {
-    console.log("アイテムの登録に失敗しました。")
-    router.push({ name: "errors" })
+  } catch (error) {
+    console.log("アイテムの登録に失敗しました。");
+    router.push({ name: "errors" });
   }
 }
 

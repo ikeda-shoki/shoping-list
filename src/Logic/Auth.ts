@@ -68,9 +68,8 @@ export async function setStores(uid: string) {
       await setCategorys(categorys);
       await setColor(colors);
     }
-  }
-  catch(error) {
-    console.log("ページ情報の取得に失敗しました。")
-    router.push({ name: 'errors' });
+  } catch (error) {
+    console.log("ページ情報の取得に失敗しました。");
+    router.push({ name: "errors" });
   }
 }

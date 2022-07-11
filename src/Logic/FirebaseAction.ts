@@ -52,7 +52,7 @@ export async function addCategory(category: Category, uid: string) {
 }
 
 export async function updateCategory(category: Category, uid: string) {
-  const categoryDocRef = db.collection('users').doc(uid).collection('categorys').doc(category.categoryId);
+  const categoryDocRef = db.collection("users").doc(uid).collection("categorys").doc(category.categoryId);
   await categoryDocRef.update({
     categoryName: category.categoryName,
     categoryColor: category.categoryColor,
