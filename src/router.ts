@@ -15,11 +15,13 @@ const routes = [
     path: "/",
     name: 'top',
     component: Top,
+    meta: { title: 'ShopingList-TOP'}
   },
   {
     path: "/itemsList",
     name: 'itemList',
     component: ItemsList,
+    meta: { title: 'ShopingList-ItemList'}
   },
   {
     path: "/regist",
@@ -31,13 +33,15 @@ const routes = [
         path: "/category/:categoryId",
         name: 'registCategory',
         component: RegistCategory,
-        props: true
+        props: true,
+        meta: { title: 'ShopingList-CategoryRegist'}
       },
       {
         path: "/category/:categoryId/item",
         name: 'registItem',
         component: RegistItem,
         props: true,
+        meta: { title: 'ShopingList-ItemRegist'}
       }
     ]
   },
@@ -50,6 +54,7 @@ const routes = [
     path: "/errors",
     name: 'errors',
     component: Errors,
+    meta: { title: 'ShopingList-Error'}
   },
 ];
 
@@ -59,6 +64,10 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to) => {
+  if (to.meta.title && typeof to.meta.title === "string") {
+    document.title = to.meta.title
+  }
+
   if (to.name !== 'top' && to.name !== 'errors') {
     if (await checkLogInState() === false) {
       return { name: 'top' }

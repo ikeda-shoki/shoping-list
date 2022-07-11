@@ -58,13 +58,19 @@ export async function checkLogInState() {
 }
 
 export async function setStores(uid: string) {
-  const loginUser = await getUser(uid);
-  const categorys = await getCategorys(uid);
-  const colors = await getColors();
-  if (loginUser !== null) {
-    await setUser(loginUser);
-    await setItems(categorys, loginUser.userId);
-    await setCategorys(categorys);
-    await setColor(colors);
+  try {
+    const loginUser = await getUser(uid);
+    const categorys = await getCategorys(uid);
+    const colors = await getColors();
+    if (loginUser !== null) {
+      await setUser(loginUser);
+      await setItems(categorys, loginUser.userId);
+      await setCategorys(categorys);
+      await setColor(colors);
+    }
+  }
+  catch(error) {
+    console.log("ページ情報の取得に失敗しました。")
+    router.push({ name: 'errors' });
   }
 }

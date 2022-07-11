@@ -51,6 +51,15 @@ export async function addCategory(category: Category, uid: string) {
   });
 }
 
+export async function updateCategory(category: Category, uid: string) {
+  const categoryDocRef = db.collection('users').doc(uid).collection('categorys').doc(category.categoryId);
+  await categoryDocRef.update({
+    categoryName: category.categoryName,
+    categoryColor: category.categoryColor,
+    updateTime: category.updateTime,
+  });
+}
+
 export async function addRegistItems(registItems: Item[], uid: string, categoryId: string) {
   const registItemsCollectionRef = collection(db, "users/" + uid + "/categorys/" + categoryId + "/registItems");
   await registItems.map((registItem: Item) => {

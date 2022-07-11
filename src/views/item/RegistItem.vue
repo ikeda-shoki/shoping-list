@@ -7,7 +7,7 @@ import ItemList from "../../components/commons/ItemList.vue";
 import { Item } from "../../store/Item";
 import { moveTop } from "../../logic/MoveTop";
 import { serverTimestamp } from "firebase/firestore";
-import { addCategory, getCategorys, addRegistItems, getCategory } from "../../logic/FirebaseAction";
+import { addCategory, getCategorys, addRegistItems, getCategory, updateCategory } from "../../logic/FirebaseAction";
 import { isRequireError, isMaxlengthError } from "../../logic/FormError";
 import { useGlogalStore, States } from "../../store/global";
 import { categoryStore, getCategoryId } from "../../store/Category";
@@ -98,25 +98,35 @@ const deleteItem = (e: Item) => {
 };
 
 async function registItems() {
-  checkItem(newItems.value);
-  if (itemsErrorMessages.value.length !== 0) {
-    moveTop();
-    return;
+  try {
+    checkItem(newItems.value);
+    if (itemsErrorMessages.value.length !== 0) {
+      moveTop();
+      return;
+    }
+  
+    let registCategoryId = state.value.registCategory.categoryId;
+    // 新規カテゴリー登録処理
+    if (state.value.registCategory.categoryId === "new") {
+      await addCategory(state.value.registCategory, state.value.loginUser.userId);
+      const newCategorys = await getCategorys(state.value.loginUser.userId);
+      registCategoryId = await getCategoryId(newCategorys, state.value.registCategory.categoryName);
+    }
+    // カテゴリー更新処理
+    else {
+      await updateCategory(state.value.registCategory, state.value.loginUser.userId);
+    }
+    // アイテム登録処理
+    await addRegistItems(newItems.value, state.value.loginUser.userId, registCategoryId);
+  
+    state.value.registCategory = await categoryStore();
+  
+    await router.push({ path: "/itemsList" });
   }
-
-  let registCategoryId = state.value.registCategory.categoryId;
-  // 新規カテゴリー登録処理
-  if (state.value.registCategory.categoryId === "new") {
-    await addCategory(state.value.registCategory, state.value.loginUser.userId);
-    const newCategorys = await getCategorys(state.value.loginUser.userId);
-    registCategoryId = await getCategoryId(newCategorys, state.value.registCategory.categoryName);
+  catch (error) {
+    console.log("アイテムの登録に失敗しました。")
+    router.push({ name: "errors" })
   }
-  // アイテム登録処理
-  await addRegistItems(newItems.value, state.value.loginUser.userId, registCategoryId);
-
-  state.value.registCategory = await categoryStore();
-
-  await router.push({ path: "/itemsList" });
 }
 
 async function checkCategoryData() {
