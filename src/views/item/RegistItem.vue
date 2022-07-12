@@ -90,6 +90,8 @@ const addItem = (e: Item, type: string) => {
   }
 
   newItem.itemName = "";
+
+  checkItem(newItems.value);
 };
 
 const deleteItem = (e: Item) => {

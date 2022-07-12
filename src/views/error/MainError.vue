@@ -3,7 +3,7 @@
 <template>
   <div class="errors">
     <h3 class="error-title">エラーが発生しました</h3>
-    <p class="error-text">恐れ入りますが、もう一度ログインし直して下さい。。。</p>
+    <p class="error-text">恐れ入りますが、もう一度操作し直して下さい。。。</p>
   </div>
 </template>
 
